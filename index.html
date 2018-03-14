@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+	<script>
+	
+
+	/*window.addEventListener("load", function() {
+		function begin(){
+		var playerName = prompt("Prosze podaj swoje imie:");
+		startGame(playerName);
+	};
+	*/
+	function begin(){
+		var playerName = prompt("Prosze podaj swoje imie:");
+		startGame(playerName);
+	};
+
+	function startGame(playerName){
+		var pointsPlayer = 0;
+		pointsPlayer += dealCard();
+		pointsPlayer += dealCard();
+		if (pointsPlayer == 22) {
+			endOfGame(playerName + " przez double ace", playerName, pointsPlayer);
+		}
+		var agree = false;
+		do{
+			if (pointsPlayer > 21) {
+				alert("przegrales przez zbyt duza liczbe punktow");
+				endOfGame("npc", playerName, "nie istotne");
+			}
+			agree = confirm("Twoj wynik to: " + pointsPlayer + ". Chcialbys dobrac karte?");
+			if (agree == true){
+				pointsPlayer += dealCard();
+			} else {
+				break;
+			}
+		}while(true);
+		if (pointsPlayer > 21) {
+			alert("przegrales przez zbyt duza liczbe punktow po petli");
+			endOfGame("npc", playerName, "nie istotne");
+		} else {
+			npcDraws(playerName, pointsPlayer);
+		}
+	};
+
+	function dealCard(){
+		var cards = [2,2,3,3,4,4,5,6,7,8,9,10,11];
+		number = Math.floor((Math.random() * 13) + 0);
+		return cards[number];
+	};
+
+	function npcDraws(playerName, pointsPlayer){
+		var pointsNPC = 0;
+		pointsNPC += dealCard();
+		pointsNPC += dealCard();
+		if (pointsNPC == 22) {
+			endOfGame("npc przez double ace", playerName, pointsNPC);
+		}
+		var agree = false;
+		do{
+			if (pointsNPC > 21) {
+				alert("NPC mial wiecej niz 21");
+				endOfGame(playerName, playerName, pointsPlayer);
+			}
+			if (pointsNPC <= pointsPlayer && pointsNPC < 20) agree = true;
+			else agree = false;
+			if (agree == true){
+				pointsNPC += dealCard();
+			} else {
+				break;
+			}
+		}while(true);
+		if (pointsNPC > 21) {
+			alert("NPC mial wiecej niz 21 poza petla");
+			endOfGame(playerName, playerName, pointsPlayer);
+		} else {
+			endOfGame("npc", playerName, pointsNPC);
+		}
+	};
+
+	function endOfGame(who, playerName, points){
+		alert(who + " wygrywa gre z iloscia punktow: " + points + "!");
+		// z iloscia punktow: " + points + "
+		if (confirm("Chcialbys zagrac jeszcze raz?")) startGame(playerName);
+		else alert("dzieki za gre");
+		exit();
+	};
+
+	function exit( status ) {
+	    var i;
+
+	    if (typeof status === 'string') {
+	        alert(status);
+	    }
+
+	    window.addEventListener('error', function (e) {e.preventDefault();e.stopPropagation();}, false);
+
+	    var handlers = [
+	        'copy', 'cut', 'paste',
+	        'beforeunload', 'blur', 'change', 'click', 'contextmenu', 'dblclick', 'focus', 'keydown', 'keypress', 'keyup', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll',
+	        'DOMNodeInserted', 'DOMNodeRemoved', 'DOMNodeRemovedFromDocument', 'DOMNodeInsertedIntoDocument', 'DOMAttrModified', 'DOMCharacterDataModified', 'DOMElementNameChanged', 'DOMAttributeNameChanged', 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'online', 'offline', 'textInput',
+	        'abort', 'close', 'dragdrop', 'load', 'paint', 'reset', 'select', 'submit', 'unload'
+	    ];
+
+	    function stopPropagation (e) {
+	        e.stopPropagation();
+	        // e.preventDefault(); // Stop for the form controls, etc., too?
+	    }
+	    for (i=0; i < handlers.length; i++) {
+	        window.addEventListener(handlers[i], function (e) {stopPropagation(e);}, true);
+	    }
+
+	    if (window.stop) {
+	        window.stop();
+	    }
+
+	    throw '';
+	}
+
+	</script>
+	<style type="text/css">
+		body{
+			font-family: open sans;
+			background: #ddd;
+		}
+		a{
+			text-decoration: none;
+			color:black;
+			text-align: center;
+			display:inline-block;
+		}
+		#play{
+			font-size:3rem;
+		}
+		h1, h2{
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+
+	<h1> Want to play some BlackJack? </h1>
+	<h2> Just press play! </h2>
+	<p style="text-align:center;">
+		<a href="#!" id="play" onclick="begin();"> 
+		<i class="fas fa-play"></i>
+		</a>
+	</p>
+	<p id="target">	</p>
+
+</body>
+</html>
