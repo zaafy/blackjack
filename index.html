@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
 	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 	<script>
 
@@ -88,7 +89,7 @@
 			if (finalScorePlayer > finalScoreNPC) alert("Player won! " + playerName + ": " + finalScorePlayer + " vs NPC: " + finalScoreNPC + "!");
 			else if (finalScorePlayer < finalScoreNPC) alert("NPC won! NPC: " + finalScoreNPC + " vs " + playerName + ": " + finalScorePlayer + "!");
 			else if (finalScorePlayer == finalScoreNPC) alert("It's a draw! " + playerName + ": " + finalScorePlayer + " vs NPC: " + finalScoreNPC + "!");
-			alert("Thanks for playing!");
+			alert("Thanks for playing! Please send feedback or constructive criticism on my github! https://github.com/zaafy");
 		}
 		exit();
 	};
@@ -115,7 +116,13 @@
 
 	</script>
 	<style type="text/css">
+		html {
+    		position: relative;
+   			min-height: 100%;
+		}
 		body{
+			margin: 0 0 50px;
+		    padding: 25px;
 			font-family: open sans;
 			background: #ddd;
 		}
@@ -142,7 +149,26 @@
 			border:1px solid #777;
 			border-collapse: collapse;
 		}
-		
+		#footer {
+		    background-color: #ddd;
+		    position: absolute;
+		    left: 0;
+		    bottom: 0;
+		    height: 50px;
+		    width: 100%;
+		    overflow:hidden;
+		    font-size:0.9rem;
+			color:#666;
+			text-align: center;
+		}
+		#footer a{
+			text-decoration: none;
+			color:#888;
+		}
+		#footer a:hover{
+			color:#999;
+			text-decoration: underline;
+		}
 	</style>
 </head>
 <body>
@@ -177,6 +203,10 @@
 			</tr>
 		</table>
 	</div>
+
+	<p id="footer" style="margin-top:25px;">
+		Online Blackjack v1.2. Created 01.03.2018 By Daniel Okoń. Contact me: <a href="mailto:wizualizacje.zaaf@gmail.com"> wizualizacje.zaaf@gmail.com </a> | +48 782 453 497 | <a href="http://zaaf.usermd.net"> zaaf.usermd.net </a>
+	</p>
 
 </body>
 </html>
