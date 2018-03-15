@@ -4,7 +4,7 @@
 	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 	<script>
 	function begin(){
-		var playerName = prompt("Prosze podaj swoje imie:");
+		var playerName = prompt("Please write Your name:");
 		startGame(playerName);
 	};
 
@@ -13,15 +13,15 @@
 		pointsPlayer += dealCard();
 		pointsPlayer += dealCard();
 		if (pointsPlayer == 22) {
-			endOfGame(playerName + " przez double ace", playerName, pointsPlayer);
+			endOfGame(playerName + " by double ace", playerName, pointsPlayer);
 		}
 		var agree = false;
 		do{
 			if (pointsPlayer > 21) {
-				alert("przegrales przez zbyt duza liczbe punktow");
-				endOfGame("npc", playerName, "nie istotne");
+				alert("You lost due to too much points (maximum should be 21 points).");
+				endOfGame("NPC", playerName, "");
 			}
-			agree = confirm("Twoj wynik to: " + pointsPlayer + ". Chcialbys dobrac karte?");
+			agree = confirm("Your score is: " + pointsPlayer + ". Do You want another card?");
 			if (agree == true){
 				pointsPlayer += dealCard();
 			} else {
@@ -29,8 +29,8 @@
 			}
 		}while(true);
 		if (pointsPlayer > 21) {
-			alert("przegrales przez zbyt duza liczbe punktow po petli");
-			endOfGame("npc", playerName, "nie istotne");
+			alert("You lost due to too much points (maximum should be 21 points).");
+			endOfGame("NPC", playerName, "");
 		} else {
 			npcDraws(playerName, pointsPlayer);
 		}
@@ -47,12 +47,12 @@
 		pointsNPC += dealCard();
 		pointsNPC += dealCard();
 		if (pointsNPC == 22) {
-			endOfGame("npc przez double ace", playerName, pointsNPC);
+			endOfGame("NPC by double ace", playerName, pointsNPC);
 		}
 		var agree = false;
 		do{
 			if (pointsNPC > 21) {
-				alert("NPC mial wiecej niz 21");
+				alert("NPC had more points than 21.");
 				endOfGame(playerName, playerName, pointsPlayer);
 			}
 			if (pointsNPC <= pointsPlayer && pointsNPC < 20) agree = true;
@@ -64,18 +64,17 @@
 			}
 		}while(true);
 		if (pointsNPC > 21) {
-			alert("NPC mial wiecej niz 21 poza petla");
+			alert("NPC had more points than 21.");
 			endOfGame(playerName, playerName, pointsPlayer);
 		} else {
-			endOfGame("npc", playerName, pointsNPC);
+			endOfGame("NPC", playerName, pointsNPC);
 		}
 	};
 
 	function endOfGame(who, playerName, points){
-		alert(who + " wygrywa gre z iloscia punktow: " + points + "!");
-		// z iloscia punktow: " + points + "
-		if (confirm("Chcialbys zagrac jeszcze raz?")) startGame(playerName);
-		else alert("dzieki za gre");
+		alert(who + " wins the game with " + points + " points!");
+		if (confirm("Would You want to play again?")) startGame(playerName);
+		else alert("Thanks for playing!");
 		exit();
 	};
 
