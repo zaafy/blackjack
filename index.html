@@ -3,8 +3,8 @@
 <head>
 	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 	<script>
+
 	function begin(playerName){
-		// PO KLIKNIECIU ZMIENIC IKONKE NA POWTORZENIE - onclick() ODSWIEZYC STRONE zeby mozna bylo powtorzyc i wymazac wyniki.
 		if (typeof playerName == 'undefined') {
 		    var playerName = "player";
 		}
@@ -19,13 +19,13 @@
 		pointsPlayer += dealCard();
 		pointsPlayer += dealCard();
 		if (pointsPlayer == 22) {
-			endOfGame(playerName + " by double ace", playerName, pointsPlayer);
+			addPoints(playerName + " by double ace", playerName, pointsPlayer);
 		}
 		var agree = false;
 		do{
 			if (pointsPlayer > 21) {
 				alert("You lost due to too much points (maximum should be 21 points).");
-				endOfGame("NPC", playerName, "");
+				addPoints("NPC", playerName, "");
 			}
 			agree = confirm("Your score is: " + pointsPlayer + ". Do You want another card?");
 			if (agree == true){
@@ -36,7 +36,7 @@
 		}while(true);
 		if (pointsPlayer > 21) {
 			alert("You lost due to too much points (maximum should be 21 points).");
-			endOfGame("NPC", playerName, "");
+			addPoints("NPC", playerName, "");
 		} else {
 			npcDraws(playerName, pointsPlayer);
 		}
@@ -53,13 +53,13 @@
 		pointsNPC += dealCard();
 		pointsNPC += dealCard();
 		if (pointsNPC == 22) {
-			endOfGame("NPC by double ace", playerName, pointsNPC);
+			addPoints("NPC by double ace", playerName, pointsNPC);
 		}
 		var agree = false;
 		do{
 			if (pointsNPC > 21) {
 				alert("NPC had more points than 21.");
-				endOfGame(playerName, playerName, pointsPlayer);
+				addPoints(playerName, playerName, pointsPlayer);
 			}
 			if (pointsNPC <= pointsPlayer && pointsNPC < 20) agree = true;
 			else agree = false;
@@ -71,61 +71,45 @@
 		}while(true);
 		if (pointsNPC > 21) {
 			alert("NPC had more points than 21.");
-			endOfGame(playerName, playerName, pointsPlayer);
+			addPoints(playerName, playerName, pointsPlayer);
 		} else if(pointsNPC > pointsPlayer){
-			 endOfGame("NPC", playerName, pointsNPC);
+			 addPoints("NPC", playerName, pointsNPC);
 		} else {
-			endOfGame(playerName, playerName, pointsPlayer);
+			addPoints(playerName, playerName, pointsPlayer);
 		}
 	};
 
 	function endOfGame(who, playerName, points){
 		alert(who + " wins the game with " + points + " points!");
-		console.log("dodano punkt dla" + who +  addPoints(who, playerName));
-		if (confirm("Would You want to play again?")) begin(playerName);
-		else alert("Thanks for playing!");
+		if (confirm("Would You want to play again?")) begin(playerName); 
+		else {
+			finalScoreNPC = parseInt(document.getElementById('scoreNPC').innerHTML);
+			finalScorePlayer = parseInt(document.getElementById('scorePlayer').innerHTML);
+			if (finalScorePlayer > finalScoreNPC) alert("Player won! " + playerName + ": " + finalScorePlayer + " vs NPC: " + finalScoreNPC + "!");
+			else if (finalScorePlayer < finalScoreNPC) alert("NPC won! NPC: " + finalScoreNPC + " vs " + playerName + ": " + finalScorePlayer + "!");
+			else if (finalScorePlayer == finalScoreNPC) alert("It's a draw! " + playerName + ": " + finalScorePlayer + " vs NPC: " + finalScoreNPC + "!");
+			alert("Thanks for playing!");
+		}
 		exit();
 	};
 
-	function addPoints(who, playerName){
+	function addPoints(who, playerName, points){
 		if (who == playerName || who == playerName + " by double ace") {
-			//var score = parseInt(document.getElementById('scorePlayer').innerHTML) + 1;
 			document.getElementById('scorePlayer').innerHTML = parseInt(document.getElementById('scorePlayer').innerHTML) + 1;
 		} else {
-			//var score = parseInt(document.getElementById('scoreNPC').innerHTML) + 1;
 			document.getElementById('scoreNPC').innerHTML = parseInt(document.getElementById('scoreNPC').innerHTML) + 1;
 		}
-		return true;
+		endOfGame(who, playerName, points);
 	}
 
-	function exit( status ) {
-	    var i;
+	function clearScores(){
+		if (confirm("Do you want to reset scores?")) {
+			document.getElementById('scorePlayer').innerHTML = "0";
+			document.getElementById('scoreNPC').innerHTML = "0";
+		}
+	}
 
-	    if (typeof status === 'string') {
-	        alert(status);
-	    }
-
-	    window.addEventListener('error', function (e) {e.preventDefault();e.stopPropagation();}, false);
-
-	    var handlers = [
-	        'copy', 'cut', 'paste',
-	        'beforeunload', 'blur', 'change', 'click', 'contextmenu', 'dblclick', 'focus', 'keydown', 'keypress', 'keyup', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll',
-	        'DOMNodeInserted', 'DOMNodeRemoved', 'DOMNodeRemovedFromDocument', 'DOMNodeInsertedIntoDocument', 'DOMAttrModified', 'DOMCharacterDataModified', 'DOMElementNameChanged', 'DOMAttributeNameChanged', 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'online', 'offline', 'textInput',
-	        'abort', 'close', 'dragdrop', 'load', 'paint', 'reset', 'select', 'submit', 'unload'
-	    ];
-
-	    function stopPropagation (e) {
-	        e.stopPropagation();
-	        // e.preventDefault(); // Stop for the form controls, etc., too?
-	    }
-	    for (i=0; i < handlers.length; i++) {
-	        window.addEventListener(handlers[i], function (e) {stopPropagation(e);}, true);
-	    }
-
-	    if (window.stop) {
-	        window.stop();
-	    }
-
+	function exit() {
 	    throw '';
 	}
 
@@ -141,8 +125,10 @@
 			text-align: center;
 			display:inline-block;
 		}
-		#play{
+		#playButton, #refreshButton{
+			display: inline-block;
 			font-size:3rem;
+			padding:30px;
 		}
 		h1, h2{
 			text-align: center;
@@ -156,15 +142,19 @@
 			border:1px solid #777;
 			border-collapse: collapse;
 		}
+		
 	</style>
 </head>
 <body>
 
 	<h1> Want to play some BlackJack? </h1>
-	<h2> Just press play! </h2>
+	<h2 id="greeting2"> Just press play! </h2>
 	<p style="text-align:center;">
-		<a href="#!" id="play" onclick="begin();"> 
-		<i class="fas fa-play"></i>
+		<a href="#!" id="playButton" onclick="begin();"> 
+			<i class="fas fa-play"></i>
+		</a>
+		<a href="#!" id="refreshButton" onclick="clearScores();">
+			<i class="fas fa-sync-alt"></i>
 		</a>
 	</p>
 	<div id="scoreboardContainer">
