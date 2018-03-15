@@ -3,8 +3,14 @@
 <head>
 	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 	<script>
-	function begin(){
-		var playerName = prompt("Please write Your name:");
+	function begin(playerName){
+		// PO KLIKNIECIU ZMIENIC IKONKE NA POWTORZENIE - onclick() ODSWIEZYC STRONE zeby mozna bylo powtorzyc i wymazac wyniki.
+		if (typeof playerName == 'undefined') {
+		    var playerName = "player";
+		}
+		while (playerName.toLowerCase() == "player" || playerName == ""){
+			playerName = prompt("Please write Your name:");
+		};
 		startGame(playerName);
 	};
 
@@ -66,17 +72,31 @@
 		if (pointsNPC > 21) {
 			alert("NPC had more points than 21.");
 			endOfGame(playerName, playerName, pointsPlayer);
+		} else if(pointsNPC > pointsPlayer){
+			 endOfGame("NPC", playerName, pointsNPC);
 		} else {
-			endOfGame("NPC", playerName, pointsNPC);
+			endOfGame(playerName, playerName, pointsPlayer);
 		}
 	};
 
 	function endOfGame(who, playerName, points){
 		alert(who + " wins the game with " + points + " points!");
-		if (confirm("Would You want to play again?")) startGame(playerName);
+		console.log("dodano punkt dla" + who +  addPoints(who, playerName));
+		if (confirm("Would You want to play again?")) begin(playerName);
 		else alert("Thanks for playing!");
 		exit();
 	};
+
+	function addPoints(who, playerName){
+		if (who == playerName || who == playerName + " by double ace") {
+			//var score = parseInt(document.getElementById('scorePlayer').innerHTML) + 1;
+			document.getElementById('scorePlayer').innerHTML = parseInt(document.getElementById('scorePlayer').innerHTML) + 1;
+		} else {
+			//var score = parseInt(document.getElementById('scoreNPC').innerHTML) + 1;
+			document.getElementById('scoreNPC').innerHTML = parseInt(document.getElementById('scoreNPC').innerHTML) + 1;
+		}
+		return true;
+	}
 
 	function exit( status ) {
 	    var i;
@@ -127,6 +147,15 @@
 		h1, h2{
 			text-align: center;
 		}
+		#scoreboardContainer{
+			text-align: center;
+		}
+		table, td, tr{
+			margin:auto;
+			padding:10px;
+			border:1px solid #777;
+			border-collapse: collapse;
+		}
 	</style>
 </head>
 <body>
@@ -138,7 +167,26 @@
 		<i class="fas fa-play"></i>
 		</a>
 	</p>
-	<p id="target">	</p>
+	<div id="scoreboardContainer">
+		<table id="scoreboard">
+			<tr>
+				<td id="textScoreboard">
+					Player:
+				</td>
+				<td id="textScoreboard">
+					NPC:
+				</td>
+			</tr>
+			<tr>
+				<td id="scorePlayer">
+					0
+				</td>
+				<td id="scoreNPC">
+					0
+				</td>
+			</tr>
+		</table>
+	</div>
 
 </body>
 </html>
